@@ -54,10 +54,18 @@
           </li>
           </li>
            
-          <li >
+          <li>
           <a href="{{ url('admin/banner') }}" class="nav-link {{ request()->is('admin/banner/*') || request()->is('admin/banner') ? 'active' : ''}} ">
               <p>
               Banner Management 
+              </p>
+            </a>
+          </li>
+
+          <li>
+          <a href="{{ url('admin/category') }}" class="nav-link {{ request()->is('admin/category/*') || request()->is('admin/category') ? 'active' : ''}} ">
+              <p>
+              Category Management 
               </p>
             </a>
           </li>
