@@ -1,6 +1,6 @@
-@foreach ($errors as $error)
+<!-- @foreach ($errors as $error)
       <li>{{ $error }}</li>
-@endforeach
+@endforeach -->
 
 <script>
   $(document).ready(function() {
@@ -9,37 +9,37 @@
 </script> 
 
 <div class="form-group {{ $errors->has('firstname') ? 'has-error' : ''}}">
-    <label for="firstname" class="control-label">{{ 'Firstname' }}</label>   
+    <label for="firstname" class="control-label">{{ 'Firstname' }}</label> <span style="color: red;" >{{' *'}}</span>  
     <input class="form-control" name="firstname" type="text" id="firstname" value="{{ isset($userss->firstname) ? $userss->firstname : old('firstname') }} " >
     {!! $errors->first('firstname', '<p style="color:red;" class="help-block">:message</p>') !!}
 </div>
 
 <div class="form-group {{ $errors->has('lastname') ? 'has-error' : ''}}">
-    <label for="lastname" class="control-label">{{ 'Lastname' }}</label>
+    <label for="lastname" class="control-label">{{ 'Lastname' }}</label><span style="color: red;" >{{' *'}}</span>
     <input class="form-control" name="lastname" type="text" id="lastname" value="{{ isset($userss->lastname) ? $userss->lastname : old('lastname' )}}" >
     {!! $errors->first('lastname', '<p style="color:red;" class="help-block">:message</p>') !!}
 </div>
 
 <div class="form-group {{ $errors->has('email') ? 'has-error' : ''}}">
-    <label for="email" class="control-label">{{ 'Email' }}</label>
+    <label for="email" class="control-label">{{ 'Email' }}</label><span style="color: red;" >{{' *'}}</span>
     <input class="form-control" name="email" type="email" id="email" value="{{ isset($userss->email) ? $userss->email : old('email')}}" >
     {!! $errors->first('email', '<p style="color:red;" class="help-block">:message</p>') !!}
 </div>
 
 <div class="form-group {{ $errors->has('password') ? 'has-error' : ''}}">
-    <label for="password" class="control-label">{{ 'Password' }}</label>
+    <label for="password" class="control-label">{{ 'Password' }}</label><span style="color: red;" >{{' *'}}</span>
     <input class="form-control" name="password" type="password" id="password" >
     {!! $errors->first('password', '<p style="color:red;" class="help-block">:message</p>') !!}
 </div>
 
 <div class="form-group {{ $errors->has('Confirm_password') ? 'has-error' : ''}}">
-    <label for="Confirm_password" class="control-label">{{ 'Confirm Password' }}</label>
+    <label for="Confirm_password" class="control-label">{{ 'Confirm Password' }}</label><span style="color: red;" >{{' *'}}</span>
     <input class="form-control" name="Confirm_password" type="password" id="Confirm_password" >
     {!! $errors->first('Confirm_password', '<p style="color:red;" class="help-block">:message</p>') !!}
 </div>
 
 <div class="form-group {{ $errors->has('status') ? 'has-error' : ''}}">
-    <label for="status" class="control-label">{{ 'Status' }}</label>
+    <label for="status" class="control-label">{{ 'Status' }}</label><span style="color: red;" >{{' *'}}</span>
     <div class="radio">
     <label><input name="status" type="radio" value="Active" {{ (isset($userss) && 1 == $userss->status) ? 'checked' : '' }}> Active</label>
 </div>
@@ -50,7 +50,7 @@
     {!! $errors->first('status', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('role') ? 'has-error' : ''}}">
-    <label for="role" class="control-label">{{ 'Role' }}</label>
+    <label for="role" class="control-label">{{ 'Role' }}</label><span style="color: red;" >{{' *'}}</span>
    
     <!-- <select multiple name="role" class="form-control" id="role" > -->
     <select class="js-example-basic-multiple form-control custom-select" name="role[]" multiple="multiple">    

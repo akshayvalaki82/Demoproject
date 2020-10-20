@@ -1,12 +1,12 @@
 <div class="form-group {{ $errors->has('conf_key') ? 'has-error' : ''}}">
-    <label for="conf_key" class="control-label">{{ 'Conf Key' }}</label>
-    <input class="form-control" name="conf_key" type="text" id="conf_key" value="{{ isset($configuration->conf_key) ? $configuration->conf_key : ''}}" >
-    {!! $errors->first('conf_key', '<p class="help-block">:message</p>') !!}
+    <label for="conf_key" class="control-label">{{ 'Conf Key' }}</label><span style="color: red;" >{{' *'}}</span>
+    <input class="form-control" name="conf_key" type="text" id="conf_key" value="{{ isset($configuration->conf_key) ? $configuration->conf_key : old('conf_key')}}" >
+    {!! $errors->first('conf_key', '<p style="color:red;" class="help-block ">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('conf_value') ? 'has-error' : ''}}">
-    <label for="conf_value" class="control-label">{{ 'Conf Value' }}</label>
-    <input class="form-control" name="conf_value" type="text" id="conf_value" value="{{ isset($configuration->conf_value) ? $configuration->conf_value : ''}}" >
-    {!! $errors->first('conf_value', '<p class="help-block">:message</p>') !!}
+    <label for="conf_value" class="control-label">{{ 'Conf Value' }}</label><span style="color: red;" >{{' *'}}</span>
+    <input class="form-control" name="conf_value" type="text" id="conf_value" value="{{ isset($configuration->conf_value) ? $configuration->conf_value : old('conf_value')}}" >
+    {!! $errors->first('conf_value', '<p style="color:red;" class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('created_by') ? 'has-error' : ''}}">
     <!-- <label for="created_by" class="control-label">{{ 'Created By' }}</label> -->

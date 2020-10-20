@@ -66,6 +66,7 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8|max:12|alpha_num',
             'Confirm_password' => 'required',
+            'role'=>'required',
          ]);
         //User::create($requestData);
 
@@ -108,7 +109,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $role_user = DB::table('role_user')->where('user_id', $id)->pluck('role_id')->toArray();
+        // $role_user = DB::table('role_user')->where('user_id', $id);
+         $role_user = DB::table('role_user')->where('user_id', $id)->pluck('role_id')->toArray();
+        dd($role_user);
         $roles = DB::table('roles')
                 ->select('id','name')
                 ->get();          

@@ -19,8 +19,6 @@ class ConfigurationController extends Controller
     {
         $keyword = $request->get('search');
         $perPage = 25;
-        // $value = $request->session()->get('key');
-        // dd($value);
         if (!empty($keyword)) {
             $configuration = configuration::where('conf_key', 'LIKE', "%$keyword%")
                 ->orWhere('conf_value', 'LIKE', "%$keyword%")
@@ -54,6 +52,10 @@ class ConfigurationController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'conf_key'=>'required',
+            'conf_value'=>'required',
+        ]);
         $configuration = new configuration;
         $configuration->conf_key = request('conf_key');
         $configuration->conf_value = request('conf_value');
@@ -109,6 +111,10 @@ class ConfigurationController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'conf_key'=>'required',
+            'conf_value'=>'required',
+        ]);
         $configuration = configuration::find($id);
         $configuration->conf_key = request('conf_key');
         $configuration->conf_value = request('conf_value');
