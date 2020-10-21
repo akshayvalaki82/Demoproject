@@ -56,6 +56,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $category = new category;
         $category->name = request('name');
         $category->parent_id = request('parent_id');
@@ -96,8 +97,9 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::findOrFail($id);
-
-        return view('admin.category.edit', compact('category'));
+        $perentid = Category::where('parent_id', null)->get();
+        // dd($perentid);
+        return view('admin.category.edit', compact('category','perentid'));
     }
 
     /**

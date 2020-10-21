@@ -78,6 +78,7 @@ class UserController extends Controller
         $userss->status = request('status');
         $userss->save();
         $userss->roles()->sync(request('role'));    
+        // dd($userss);
         // $requestData = $request->all();
         // // dd($requestData);
         //User::create($requestData);
@@ -111,7 +112,7 @@ class UserController extends Controller
     {
         // $role_user = DB::table('role_user')->where('user_id', $id);
          $role_user = DB::table('role_user')->where('user_id', $id)->pluck('role_id')->toArray();
-        dd($role_user);
+        // dd($role_user);
         $roles = DB::table('roles')
                 ->select('id','name')
                 ->get();          
