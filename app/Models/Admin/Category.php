@@ -26,6 +26,10 @@ class Category extends Model
      * @var array
      */
     protected $fillable = ['name', 'parent_id', 'created_by', 'updated_by', 'status'];
-
+     
+    public function parent()
+    {
+        return $this->belongsTo('App\Models\Admin\Category', 'parent_id', 'id');
+    }
     
 }

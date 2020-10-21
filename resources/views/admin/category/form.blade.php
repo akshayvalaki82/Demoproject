@@ -4,8 +4,14 @@
     {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('parent_id') ? 'has-error' : ''}}">
-    <label for="parent_id" class="control-label">{{ 'Parent Id' }}</label>
-    <input class="form-control" name="parent_id" type="number" id="parent_id" value="{{ isset($category->parent_id) ? $category->parent_id : ''}}" >
+    <label for="parent_id" class="control-label">{{ 'Parent' }}</label> <br>
+    <select class="js-example-basic-multiple form-control custom-select" name="parent_id" id="parent_id">
+        <option value="select">select</option>
+        @foreach($perentid as $pid)
+        <option value="{{$pid->id}}">{{$pid->name}}</option>
+        @endforeach
+    </select>
+    <!-- <input class="form-control" name="parent_id" type="number" id="parent_id" value="{{ isset($category->parent_id) ? $category->parent_id : ''}}" > -->
     {!! $errors->first('parent_id', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('created_by') ? 'has-error' : ''}}">

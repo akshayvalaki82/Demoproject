@@ -21,15 +21,16 @@ class CategoryController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $category = Category::where('name', 'LIKE', "%$keyword%")
+            $category = Category::with('parent')->where('name', 'LIKE', "%$keyword%")
                 ->orWhere('parent_id', 'LIKE', "%$keyword%")
                 ->orWhere('created_by', 'LIKE', "%$keyword%")
                 ->orWhere('updated_by', 'LIKE', "%$keyword%")
                 ->orWhere('status', 'LIKE', "%$keyword%")
                 ->latest()->paginate($perPage);
         } else {
-            $category = Category::latest()->paginate($perPage);
+            $category = Category::with('parent')->latest()->paginate($perPage);
         }
+        // dd($category); 
 
         return view('admin.category.index', compact('category'));
     }
@@ -40,8 +41,10 @@ class CategoryController extends Controller
      * @return \Illuminate\View\View
      */
     public function create()
-    {
-        return view('admin.category.create');
+    {   
+        $perentid = Category::where('parent_id', null)->get();
+        // dd($category);
+        return view('admin.category.create',compact('perentid'));
     }
 
     /**
@@ -77,6 +80,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
+        
         $category = Category::findOrFail($id);
 
         return view('admin.category.show', compact('category'));
