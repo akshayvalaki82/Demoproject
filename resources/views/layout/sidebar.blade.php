@@ -69,6 +69,15 @@
               </p>
             </a>
           </li>
+
+          <li>
+          <a href="{{ url('admin/product-attributes') }}" class="nav-link {{ request()->is('admin/product-attributes/*') || request()->is('admin/product-attributes') ? 'active' : ''}} ">
+              <p>
+              Product Attributes 
+              </p>
+            </a>
+          </li> 
+
           </li>
       </nav>
       <!-- /.sidebar-menu -->
