@@ -43,14 +43,14 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>Name</th><th>Created By</th><th>Updated By</th><th>Actions</th>
+                                        <th>#</th><th>Name</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($productattributes as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->name }}</td><td>{{ $item->created_by }}</td><td>{{ $item->updated_by }}</td>
+                                        <td>{{ $item->name }}</td>
                                         <td>
                                             <a href="{{ url('/admin/product-attributes/' . $item->id) }}" title="View ProductAttribute"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/admin/product-attributes/' . $item->id . '/edit') }}" title="Edit ProductAttribute"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>

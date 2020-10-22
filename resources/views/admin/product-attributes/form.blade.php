@@ -2,11 +2,12 @@
     var i=1;
     $(function(){
         $('.ck').click(function(){
-            $('.divetext').append("<input type='text' name='atv' class='cl"+ i +"' value=''/>");
+            $('.divetext').append("<input type='text' name='attribute_value[]' class='cl"+ i +"' value=''/>");
             i= i+1;
         })
     })
 </script>
+
 
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="control-label">{{ 'Name' }}</label>

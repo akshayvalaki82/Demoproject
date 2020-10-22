@@ -40,7 +40,7 @@
                                     <tr>
                                         <th>ID</th><td>{{ $productattribute->id }}</td>
                                     </tr>
-                                    <tr><th> Name </th><td> {{ $productattribute->name }} </td></tr><tr><th> Created By </th><td> {{ $productattribute->created_by }} </td></tr><tr><th> Updated By </th><td> {{ $productattribute->updated_by }} </td></tr>
+                                    <tr><th> Name </th><td> {{ $productattribute->name }} </td></tr>
                                 </tbody>
                             </table>
                         </div>

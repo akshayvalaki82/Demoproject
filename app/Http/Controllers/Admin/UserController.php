@@ -77,6 +77,7 @@ class UserController extends Controller
         $userss->password = bcrypt(request('password'));
         $userss->status = request('status');
         $userss->save();
+        //  dd(request('role'));   
         $userss->roles()->sync(request('role'));    
         // dd($userss);
         // $requestData = $request->all();

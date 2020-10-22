@@ -6,7 +6,10 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\ProductAttribute;
+use App\Product_Attribute_Values;
 use Illuminate\Http\Request;
+use DB;
+use carbon\carbon;
 
 class ProductAttributesController extends Controller
 {
@@ -53,16 +56,27 @@ class ProductAttributesController extends Controller
     {
         // dd(auth()->user()->id);
         $productattribute = new productattribute;
-        // $productattributeatv = request('atv');
-        // dd($productattributeatv);
+        $attribute_values = request('attribute_value');
+        //   dd($attribute_values);
         $productattribute->name = request('name');
         $productattribute->created_by = auth()->user()->id;
         $productattribute->updated_by = auth()->user()->id;
         $productattribute->save();
-
-        // $requestData = $request->all();
         
-        // ProductAttribute::create($requestData);
+        $product__attribute__values=[];
+        foreach($attribute_values as $attribute_value) {
+            $product__attribute__values[] =['product_attribute_id' => $productattribute->id,
+                'attribute_value' => $attribute_value,
+                'created_by' =>  auth()->user()->id,
+                'updated_by' =>  auth()->user()->id,
+                'created_at' =>  Carbon::now(),
+                'updated_at' =>  Carbon::now()
+            ];
+        }
+        if(!empty( $product__attribute__values )) 
+        { 
+          Product_Attribute_Values::insert($product__attribute__values); 
+        }
 
         return redirect('admin/product-attributes')->with('flash_message', 'ProductAttribute added!');
     }
