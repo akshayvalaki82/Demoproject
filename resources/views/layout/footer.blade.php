@@ -52,4 +52,4 @@
 <script src="{{ asset('admin/js/demo.js')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <!-- <script src="{{ asset('admin/js/dashboard.js')}}"></script> -->
-
+@yield('js')

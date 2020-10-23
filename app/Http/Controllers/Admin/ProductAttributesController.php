@@ -53,8 +53,8 @@ class ProductAttributesController extends Controller
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
-    {
-        // dd(auth()->user()->id);
+    {    
+        // for store a data from create page
         $productattribute = new productattribute;
         $attribute_values = request('attribute_value');
         //   dd($attribute_values);
@@ -62,7 +62,7 @@ class ProductAttributesController extends Controller
         $productattribute->created_by = auth()->user()->id;
         $productattribute->updated_by = auth()->user()->id;
         $productattribute->save();
-        
+        // for add the product attribte values
         $product__attribute__values=[];
         foreach($attribute_values as $attribute_value) {
             $product__attribute__values[] =['product_attribute_id' => $productattribute->id,
@@ -73,6 +73,7 @@ class ProductAttributesController extends Controller
                 'updated_at' =>  Carbon::now()
             ];
         }
+        // inserting value of product attribute
         if(!empty( $product__attribute__values )) 
         { 
           Product_Attribute_Values::insert($product__attribute__values); 
@@ -91,8 +92,8 @@ class ProductAttributesController extends Controller
     public function show($id)
     {
         $productattribute = ProductAttribute::findOrFail($id);
-
-        return view('admin.product-attributes.show', compact('productattribute'));
+        $Product_Attribute_Values= Product_Attribute_Values::where('product_attribute_id',$id)->get();
+        return view('admin.product-attributes.show', compact('productattribute','Product_Attribute_Values'));
     }
 
     /**
@@ -105,8 +106,8 @@ class ProductAttributesController extends Controller
     public function edit($id)
     {
         $productattribute = ProductAttribute::findOrFail($id);
-
-        return view('admin.product-attributes.edit', compact('productattribute'));
+        $product__attribute__values = DB::table('product__attribute__values')->where('product_attribute_id', $id)->get();
+        return view('admin.product-attributes.edit', compact('productattribute','product__attribute__values'));
     }
 
     /**
@@ -119,10 +120,66 @@ class ProductAttributesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request->all());
+        
+        // for updateing the value of edit page 
         $productattribute = ProductAttribute::findOrFail($id);
         $productattribute->name = request('name');
         $productattribute->updated_by = auth()->user()->id;
-        $productattribute->save();
+        $productattribute->save();        
+        // $attribute_valuesold = request('attribute_valueold');
+        // $attribute_valuesoldid = request('attribute_valueoldid');
+        $attribute_values = request('attribute_value');
+        Product_Attribute_Values::where('product_attribute_id', $id)->delete();
+        $product__attribute__values=[];
+        foreach($attribute_values as $attribute_value) {
+            $product__attribute__values[] =['product_attribute_id' => $productattribute->id,
+                'attribute_value' => $attribute_value,
+                'created_by' =>  auth()->user()->id,
+                'updated_by' =>  auth()->user()->id,
+                'created_at' =>  Carbon::now(),
+                'updated_at' =>  Carbon::now()
+            ];
+        }
+        // inserting value of product attribute
+        if(!empty( $product__attribute__values )) 
+        { 
+          Product_Attribute_Values::insert($product__attribute__values); 
+        }
+        // for updating old attribute value  
+    //     $i=0; 
+    //     foreach($attribute_valuesold as $atvold) {
+    //         $j=0;   
+    //             foreach($attribute_valuesoldid as $atvoldid){                   
+    //                 if($i==$j){
+    //                 $product__attribute__values = Product_Attribute_Values::find($atvoldid);
+    //                 $product__attribute__values->attribute_value = $atvold;
+    //                 $product__attribute__values->save();
+    //                 }
+    //                 $j=$j+1;   
+    //             }
+    //         $i=$i+1;        
+    //     }
+    //     // For Addnig The New Attribute Value In Edit Page  
+    //     if(!empty($attribute_values)) 
+    //     { 
+    //     $product__attribute__values=[];
+    //     foreach($attribute_values as $attribute_value) {
+    //         $product__attribute__values[] =['product_attribute_id' => $id,
+    //             'attribute_value' => $attribute_value,
+    //             'created_by' =>  auth()->user()->id,
+    //             'updated_by' =>  auth()->user()->id,
+    //             'created_at' =>  Carbon::now(),
+    //             'updated_at' =>  Carbon::now()
+    //         ];
+    //     }
+    //     if(!empty( $product__attribute__values )) 
+    //     { 
+    //       Product_Attribute_Values::insert($product__attribute__values); 
+    //     }
+    // }
+
+
         
         // $productattribute->update($requestData);
 

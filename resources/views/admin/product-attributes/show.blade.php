@@ -41,6 +41,9 @@
                                         <th>ID</th><td>{{ $productattribute->id }}</td>
                                     </tr>
                                     <tr><th> Name </th><td> {{ $productattribute->name }} </td></tr>
+                                    @foreach($Product_Attribute_Values as $Product_Attribute_Values)
+                                    <tr><th> Attribute Value </th><td> {{ $Product_Attribute_Values->attribute_value }} </td></tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
