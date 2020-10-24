@@ -76,7 +76,15 @@
               Product Attributes 
               </p>
             </a>
-          </li> 
+          </li>
+
+          <li>
+          <a href="{{ url('admin/product') }}" class="nav-link {{ request()->is('admin/product/*') || request()->is('admin/product') ? 'active' : ''}} ">
+              <p>
+              Product 
+              </p>
+            </a>
+          </li>
 
           </li>
       </nav>

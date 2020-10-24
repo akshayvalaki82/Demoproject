@@ -46,3 +46,4 @@ Route::resource('admin/configuration', 'Admin\ConfigurationController');
 Route::resource('admin/banner', 'Admin\BannerController');
 Route::resource('admin/category', 'Admin\CategoryController');
 Route::resource('admin/product-attributes', 'Admin\ProductAttributesController');
+Route::resource('admin/product', 'Admin\ProductController');
