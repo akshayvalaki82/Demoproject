@@ -6,7 +6,9 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Product;
+use App\Product_Images;
 use Illuminate\Http\Request;
+use carbon\carbon;
 
 class ProductController extends Controller
 {
@@ -64,6 +66,8 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $product = new product;
+        $product_image_name = request('product_image_name');
+        // dd($product_image_name);
         $product->name = request('name');
         $product->sku = request('sku');
         $product->short_description = request('short_description');
@@ -80,10 +84,28 @@ class ProductController extends Controller
         $product->updated_by = auth()->user()->id;
         $product->status = request('status');
         $product->save();
+        $images = [];
+        if($request->hasfile('product_image_name'))
+        {
+            foreach($product_image_name as $product_image_names) 
+            {
+                $extension = $product_image_names->getClientOriginalExtension();
+                $filename = time().'.'.$extension;
+                // dd($filename);
+                $product_image_names->move('admin/product_image/',$filename);
 
-        // $requestData = $request->all();
-        
-        // Product::create($requestData);
+                $images[] =['product_id' => $product->id,
+                            'image_name' => $filename,
+                            'created_by' =>  auth()->user()->id,
+                            'updated_by' =>  auth()->user()->id,
+                            'created_at' =>  Carbon::now(),
+                            'updated_at' =>  Carbon::now()
+                           ];
+            }
+            if(!empty($images)){
+                Product_Images::insert($images);
+            }
+        }
 
         return redirect('admin/product')->with('flash_message', 'Product added!');
     }
@@ -112,8 +134,9 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-
-        return view('admin.product.edit', compact('product'));
+        $product_images_name = Product_Images::where('product_id',$id)->get();
+        // dd($product_images_name);
+        return view('admin.product.edit', compact('product','product_images_name'));
     }
 
     /**
@@ -144,10 +167,61 @@ class ProductController extends Controller
         $product->updated_by = auth()->user()->id;
         $product->status = request('status');
         $product->save();
-        
-        $requestData = $request->all();
-        $product = Product::findOrFail($id);
-        $product->update($requestData);
+        // dd($request->all());
+        // dd(request('product_imageoldid'));
+       if(!empty(request('product_imageoldid')))
+        {
+           Product_Images::whereNotIn('id',request('product_imageoldid'))->where('product_id',$id)->delete(); 
+            foreach(request('product_imageoldid') as $key=>$value)
+            {
+                //   dd($value);
+                if(isset($request->product_image_name[$key]))
+                {
+                    $product_image= Product_Images::find($value);
+                    $path = public_path()."/admin/product_image/".$product_image->image_name;
+                    // for deleteing the old image
+                    if(file_exists($path))
+                    {
+                        unlink($path);
+                    }
+                    $extension = $request->product_image_name[$key]->getClientOriginalExtension();
+                    $filename = time().'.'.$extension;
+                    // dd($filename);
+                    $request->product_image_name[$key]->move('admin/product_image/',$filename);
+                    $product_image->image_name = $filename;
+                    $product_image->save();
+                    // dd($request->product_image_name[$key]);
+                    // unset($request->product_image_name[$key]);
+                    
+                }
+            }
+        }
+        if(!empty($request->product_image_name))
+        {
+            foreach($request->product_image_name as $k=>$product_image_names) 
+            {
+                if(!array_key_exists($k,request('product_imageoldid')))
+                {   $extension = $product_image_names->getClientOriginalExtension();
+                    $filename = time().'.'.$extension;
+                    // dd($filename);
+                    $product_image_names->move('admin/product_image/',$filename);
+
+                    $images[] =['product_id' => $id,
+                                'image_name' => $filename,
+                                'created_by' =>  auth()->user()->id,
+                                'updated_by' =>  auth()->user()->id,
+                                'created_at' =>  Carbon::now(),
+                                'updated_at' =>  Carbon::now()
+                            ];
+                    }           
+            }
+            if(!empty($images)){
+                Product_Images::insert($images);
+            }
+        }
+        // $requestData = $request->all();
+        // $product = Product::findOrFail($id);
+        // $product->update($requestData);
 
         return redirect('admin/product')->with('flash_message', 'Product updated!');
     }

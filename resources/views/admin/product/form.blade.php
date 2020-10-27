@@ -1,3 +1,41 @@
+<label for="name" class="control-label">{{ 'Product Image' }}</label>
+<div class="row">
+        <div class="col-lg-12">
+            @if(!empty($product_images_name))
+            @php
+                 $i=0;
+                @endphp 
+                    @foreach($product_images_name as $product_images_name)
+                        <div id="inputFormRow">          
+                    <img src="{{ asset('admin/product_image/'.$product_images_name->image_name)}}" alt=""width="100" height="100">
+                        <div class="input-group mb-3">
+                        <input class="form-control m-input" type="file"  value="" name="product_image_name[]">
+                        <input type="hidden" id="{{$product_images_name->id}}" value="{{$product_images_name->id}}" name="product_imageoldid[{{$i}}]">
+                        @if($i>0)
+                        <div class="input-group-append">                
+                        <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+                        </div>
+                        @endif
+                        @php
+                        $i++;
+                        @endphp
+                        </div>
+                    </div>
+                    @endforeach  
+                    @else 
+                    <div id="inputFormRow">
+                        <div class="input-group mb-3">
+                            <input type="file" name="product_image_name[]" class="form-control m-input"  autocomplete="off">
+                        </div>
+                    </div>
+            @endif
+                <!-- </div>    
+            </div> -->
+            <div id="newRow"></div>
+            <button id="addRow" type="button" class="btn btn-info">Add Row</button>
+        </div>
+</div>
+
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="control-label">{{ 'Name' }}</label>
     <input class="form-control" name="name" type="text" id="name" value="{{ isset($product->name) ? $product->name : ''}}" >
@@ -83,3 +121,23 @@
 <div class="form-group">
     <input class="btn btn-primary" type="submit" value="{{ $formMode === 'edit' ? 'Update' : 'Create' }}">
 </div>
+<script type="text/javascript">
+    // add row
+    $("#addRow").click(function () {
+        var html = '';
+        html += '<div id="inputFormRow">';
+        html += '<div class="input-group mb-3">';
+        html += '<input type="file" name="product_image_name[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">';
+        html += '<div class="input-group-append">';
+        html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
+        html += '</div>';
+        html += '</div>';
+
+        $('#newRow').append(html);
+    });
+
+    // remove row
+    $(document).on('click', '#removeRow', function () {
+        $(this).closest('#inputFormRow').remove();
+    });
+</script>

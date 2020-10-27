@@ -1,4 +1,3 @@
-
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="control-label">{{ 'Name' }}</label>
     <input class="form-control" name="name" type="text" id="name" value="{{ isset($productattribute->name) ? $productattribute->name : ''}}" >
@@ -36,8 +35,8 @@
                     </div>
                     @endif
                   
-                </div>
-            </div>
+                <!-- </div>
+            </div> -->
 
             <div id="newRow"></div>
             <button id="addRow" type="button" class="btn btn-info">Add Row</button>
