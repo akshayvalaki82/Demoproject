@@ -1,3 +1,8 @@
+<div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
+    <label for="name" class="control-label">{{ 'Name' }}</label>
+    <input class="form-control" name="name" type="text" id="name" value="{{ isset($product->name) ? $product->name : ''}}" >
+    {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
+</div>
 <label for="name" class="control-label">{{ 'Product Image' }}</label>
 <div class="row">
         <div class="col-lg-12">
@@ -32,15 +37,29 @@
                 <!-- </div>    
             </div> -->
             <div id="newRow"></div>
-            <button id="addRow" type="button" class="btn btn-info">Add Row</button>
+            <button id="addRow" type="button" class="btn btn-info">Add Image</button>
         </div>
 </div>
 
-<div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
-    <label for="name" class="control-label">{{ 'Name' }}</label>
-    <input class="form-control" name="name" type="text" id="name" value="{{ isset($product->name) ? $product->name : ''}}" >
-    {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
+<div class=""><table style="width:100%">
+    <tr><th> <label for="" class="control-label">{{ 'Product Attribute' }}</label> </th>
+    <th><label for="" class="control-label">{{ 'Product Attribute Value' }}</label></th> 
+    <th> </th></tr>
+    <tr><td> <select class="js-example-basic-multiple form-control custom-select product_attribute" name="ProductAttribute[]" id="ProductAttribute1">
+    <option value="">select</option>
+    @foreach($ProductAttribute as $pa)
+    <option value="{{$pa->id}}">{{$pa->name}}</option>
+    @endforeach
+    </select></td>
+    
+    <td><select class="js-example-basic-multiple form-control custom-select productattributevalue" name="productattributevalue[]" id="productattributevalue">
+    <option value="">select</option>      
+    </select> </td>
+    <td><button type="button" id="addproductatb" name="addproductatb" class="btn btn-info">Add</button><button id="remove" name="remove" class="btn btn-info">Remove</button></td></tr>
+    <td><div id="rowproductatb"></div></td>    
+</table>
 </div>
+
 <div class="form-group {{ $errors->has('sku') ? 'has-error' : ''}}">
     <label for="sku" class="control-label">{{ 'Sku' }}</label>
     <input class="form-control" name="sku" type="text" id="sku" value="{{ isset($product->sku) ? $product->sku : ''}}" >
@@ -122,7 +141,10 @@
     <input class="btn btn-primary" type="submit" value="{{ $formMode === 'edit' ? 'Update' : 'Create' }}">
 </div>
 <script type="text/javascript">
-    // add row
+
+        
+
+    // add row for image
     $("#addRow").click(function () {
         var html = '';
         html += '<div id="inputFormRow">';
@@ -132,12 +154,69 @@
         html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
         html += '</div>';
         html += '</div>';
-
         $('#newRow').append(html);
     });
-
-    // remove row
+    // remove row for image
     $(document).on('click', '#removeRow', function () {
         $(this).closest('#inputFormRow').remove();
     });
+    // for product attribute select button
+    $(document).on('click', '#Row', function () {
+        $(this).closest('#inputFormRow').remove();
+    });
+    // for attribte value
+    $(document).on('change','.product_attribute',function(){  
+    var productatbid = $(this).val();
+    // console.log(productatbid);
+     var current = $(this);
+    $.ajax({
+               type:'POST',
+               url:'{{url("/admin/product/get-attribute-value") }}',
+               dataType: 'json',
+               data: {
+                "_token": "{{ csrf_token() }}",
+                "product_attribute_id": productatbid,
+                },
+               success:function(data) {
+                // $("#data").html(data.msg);
+                  console.log(data);
+                //  console.log(data.attribute_value);
+                var html = '';
+                html +='<option value="">select</option>';
+                $.each(data.attribute_value, function(val, text) {
+                    html +='<option value="'+text.id+'">'+text.attribute_value+'</option>'
+                //  console.log(text);
+                });
+                current.parent().next().find('.productattributevalue').html(html);
+                // $('#productattributevalue').html(html)               
+                }
+            });
+    })
+
+    // for storeing the value of phpvarible to javascript variable
+    var productjattribute = [];
+    <?php foreach($ProductAttribute as $key => $val){ ?>
+        productjattribute.push('<?php echo $val; ?>');
+    <?php } ?>
+    //  console.log(productjattribute);
+    // on click boutton of add
+        $("#addproductatb").click(function () {
+        var html ='';
+        html +='<tr>';
+        html +='<td><select name="ProductAttribute[]" class="js-example-basic-multiple form-control custom-select product_attribute"><option value="">select</option>';
+        $.each(productjattribute, function(val, text) {
+                    var x = JSON.parse(text);
+                    html +='<option value="'+x.id+'">'+x.name+'</option>'
+                //  console.log(x.name);
+                });
+        html +='</select></td>';
+        html +='<td><select name="productattributevalue[]" class="js-example-basic-multiple form-control custom-select productattributevalue" id="productattributevalue" ><option value="">select</option> </select></td>';
+        html +='</tr>';
+        $('#rowproductatb').append(html);
+        
+        
+        });
+       
+        
+
 </script>

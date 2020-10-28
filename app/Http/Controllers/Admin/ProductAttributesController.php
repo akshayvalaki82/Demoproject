@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\ProductAttribute;
+use App\Models\Admin\ProductAttribute;
 use App\Product_Attribute_Values;
 use Illuminate\Http\Request;
 use DB;

@@ -42,8 +42,17 @@ Route::resource('admin/posts', 'Admin\PostsController');
 
 
 Route::resource('admin/user', 'Admin\UserController');
+
 Route::resource('admin/configuration', 'Admin\ConfigurationController');
+
 Route::resource('admin/banner', 'Admin\BannerController');
+
 Route::resource('admin/category', 'Admin\CategoryController');
+
 Route::resource('admin/product-attributes', 'Admin\ProductAttributesController');
+
 Route::resource('admin/product', 'Admin\ProductController');
+
+Route::post('/admin/product/get-attribute-value', 'Admin\ProductController@getAttributeValue');
+
+Route::post('/admin/product/get-attribute-value-new', 'Admin\ProductController@getAttributeValuenew');

@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Product;
+use App\Models\Admin\Product;
 use App\Product_Images;
+use App\Product_Attributes_Assoc;
+use App\Product_Attribute_Values;
+use App\Models\Admin\ProductAttribute;
 use Illuminate\Http\Request;
 use carbon\carbon;
 
@@ -42,7 +45,6 @@ class ProductController extends Controller
         } else {
             $product = Product::latest()->paginate($perPage);
         }
-
         return view('admin.product.index', compact('product'));
     }
 
@@ -53,7 +55,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.product.create');
+        $ProductAttribute = ProductAttribute::all();
+        $Product_Attribute_Values = Product_Attribute_Values::all();
+        // dd($ProductAttribute);   
+        return view('admin.product.create',compact('ProductAttribute','Product_Attribute_Values'));
     }
 
     /**
@@ -106,7 +111,15 @@ class ProductController extends Controller
                 Product_Images::insert($images);
             }
         }
-
+        $productvalueassos = [];
+        $productvalueassos[]=[
+            'product_id' => $product->id,
+            'product_attribute_id' => request('ProductAttribute'),
+            'product_attribute_value_id' => request('productattributevalue'),
+        ];
+        if(!empty($productvalueassos)){
+            Product_Attributes_Assoc::insert( $productvalueassos);
+        }
         return redirect('admin/product')->with('flash_message', 'Product added!');
     }
 
@@ -174,10 +187,12 @@ class ProductController extends Controller
            Product_Images::whereNotIn('id',request('product_imageoldid'))->where('product_id',$id)->delete(); 
             foreach(request('product_imageoldid') as $key=>$value)
             {
-                //   dd($value);
+                // dd(request('product_imageoldid'));
+                // dd($value);
                 if(isset($request->product_image_name[$key]))
                 {
                     $product_image= Product_Images::find($value);
+                    // dd($product_image);
                     $path = public_path()."/admin/product_image/".$product_image->image_name;
                     // for deleteing the old image
                     if(file_exists($path))
@@ -185,6 +200,7 @@ class ProductController extends Controller
                         unlink($path);
                     }
                     $extension = $request->product_image_name[$key]->getClientOriginalExtension();
+                    // dd($request->product_image_name[$key]);
                     $filename = time().'.'.$extension;
                     // dd($filename);
                     $request->product_image_name[$key]->move('admin/product_image/',$filename);
@@ -196,8 +212,10 @@ class ProductController extends Controller
                 }
             }
         }
+        // if user go to any edit product and than he want to add new image .
         if(!empty($request->product_image_name))
         {
+            // dd($request->product_image_name);
             foreach($request->product_image_name as $k=>$product_image_names) 
             {
                 if(!array_key_exists($k,request('product_imageoldid')))
@@ -219,9 +237,6 @@ class ProductController extends Controller
                 Product_Images::insert($images);
             }
         }
-        // $requestData = $request->all();
-        // $product = Product::findOrFail($id);
-        // $product->update($requestData);
 
         return redirect('admin/product')->with('flash_message', 'Product updated!');
     }
@@ -238,5 +253,18 @@ class ProductController extends Controller
         Product::destroy($id);
 
         return redirect('admin/product')->with('flash_message', 'Product deleted!');
+    }
+
+    public function getAttributeValue(Request $request){
+        //  console.log((request('product_attribute_id')));
+       $productattributeid = Product_Attribute_Values::where('product_attribute_id',request('product_attribute_id'))->get();
+        //  dd($request->all());
+        return response()->json(array('attribute_value'=> $productattributeid), 200);
+    }
+    public function getAttributeValuenew(Request $request){
+        //  console.log((request('product_attribute_id')));
+       $productattributeid = Product_Attribute_Values::where('product_attribute_id',request('product_attribute_id'))->get();
+        //  dd($request->all());
+        return response()->json(array('attribute_value'=> $productattributeid), 200);
     }
 }
