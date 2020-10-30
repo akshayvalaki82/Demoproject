@@ -57,8 +57,9 @@ class ProductController extends Controller
     {
         $ProductAttribute = ProductAttribute::all();
         $Product_Attribute_Values = Product_Attribute_Values::all();
+        $Product_Attributes_Assoc = [];
         // dd($ProductAttribute);   
-        return view('admin.product.create',compact('ProductAttribute','Product_Attribute_Values'));
+        return view('admin.product.create',compact('ProductAttribute','Product_Attribute_Values','Product_Attributes_Assoc'));
     }
 
     /**
@@ -90,6 +91,7 @@ class ProductController extends Controller
         $product->status = request('status');
         $product->save();
         $images = [];
+        // for adding the image 
         if($request->hasfile('product_image_name'))
         {
             foreach($product_image_name as $product_image_names) 
@@ -111,14 +113,32 @@ class ProductController extends Controller
                 Product_Images::insert($images);
             }
         }
-        $productvalueassos = [];
-        $productvalueassos[]=[
-            'product_id' => $product->id,
-            'product_attribute_id' => request('ProductAttribute'),
-            'product_attribute_value_id' => request('productattributevalue'),
-        ];
-        if(!empty($productvalueassos)){
-            Product_Attributes_Assoc::insert( $productvalueassos);
+        // for adding the attribute 
+        $ProductAttribute = request('ProductAttribute');
+        $productattributevalue = request('productattributevalue');
+        // dd($productattributevalue);
+        $productvaluearry = [];
+        $i=0;
+        foreach($ProductAttribute as $pa)
+        { $j=0;
+            foreach($productattributevalue as $pav)
+            {
+                 if($i==$j){
+                            // dd($pa);
+                            $productvaluearry[]=[
+                                'product_id' => $product->id,
+                                'product_attribute_id' => $pa,
+                                'product_attribute_value_id' => $pav,
+                                'created_at' =>  Carbon::now(),
+                                'updated_at' =>  Carbon::now()
+                            ];
+                            }
+                            $j=$j+1;
+            }
+            $i=$i+1;
+        }
+        if(!empty($productvaluearry)){
+            Product_Attributes_Assoc::insert( $productvaluearry);
         }
         return redirect('admin/product')->with('flash_message', 'Product added!');
     }
@@ -146,10 +166,20 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        $ProductAttribute = ProductAttribute::all();
+        $Product_Attribute_Values = Product_Attribute_Values::all()->toArray();
         $product = Product::findOrFail($id);
         $product_images_name = Product_Images::where('product_id',$id)->get();
-        // dd($product_images_name);
-        return view('admin.product.edit', compact('product','product_images_name'));
+        $Product_Attributes_Assoc = Product_Attributes_Assoc::where('product_id',$id)->get();
+        $product_atb_value =[];
+        if(!empty($Product_Attribute_Values))
+        {
+            foreach($Product_Attribute_Values as $pav)
+            {
+                $product_atb_value[$pav['product_attribute_id']][] = $pav;
+            }
+        }  
+        return view('admin.product.edit', compact('product','product_images_name','ProductAttribute','Product_Attribute_Values','Product_Attributes_Assoc','product_atb_value'));
     }
 
     /**
@@ -162,6 +192,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $Product_Attributes_Assoc = Product_Attributes_Assoc::where('product_id',$id)->delete();
         $product = Product ::find($id);
         // dd($product);
         $product->name = request('name');
@@ -236,6 +267,32 @@ class ProductController extends Controller
             if(!empty($images)){
                 Product_Images::insert($images);
             }
+        }
+        $ProductAttribute = request('ProductAttribute');
+        $productattributevalue = request('productattributevalue');
+        //  dd($productattributevalue);
+        $productvaluearry = [];
+        $i=0;
+        foreach($ProductAttribute as $pa)
+        { $j=0;
+            foreach($productattributevalue as $pav)
+            {
+                 if($i==$j){
+                            // dd($pa);
+                            $productvaluearry[]=[
+                                'product_id' => $product->id,
+                                'product_attribute_id' => $pa,
+                                'product_attribute_value_id' => $pav,
+                                'created_at' =>  Carbon::now(),
+                                'updated_at' =>  Carbon::now()
+                            ];
+                            }
+                            $j=$j+1;
+            }
+            $i=$i+1;
+        }
+        if(!empty($productvaluearry)){
+            Product_Attributes_Assoc::insert( $productvaluearry);
         }
 
         return redirect('admin/product')->with('flash_message', 'Product updated!');
