@@ -30,7 +30,7 @@
                     @else 
                     <div id="inputFormRow">
                         <div class="input-group mb-3">
-                            <input type="file" name="product_image_name[]" class="form-control m-input"  autocomplete="off">
+                            <input type="file" id="product_image_name" name="product_image_name[]" class=" m-input"  autocomplete="off">
                         </div>
                     </div>
             @endif
@@ -45,16 +45,18 @@
     <tr><th> <label for="" class="control-label"> Product Attribute</label> </th>
     <th><label for="" class="control-label">Product Attribute Value</label></th> 
     <th> </th></tr>
-    
+    @php
+    $q = 1;
+    @endphp
     @if(!empty($Product_Attributes_Assoc))
         @foreach($Product_Attributes_Assoc as $Product_Attributes_Assoc)
-            <tr class="remove_value_{{$Product_Attributes_Assoc->id}}" ><td> <select class="js-example-basic-multiple form-control custom-select product_attribute" name="ProductAttribute[]" id="ProductAttribute">
+            <tr class="remove_value_{{$Product_Attributes_Assoc->id}} removeatbfiled " ><td style="width:33.33%"> <select class="js-example-basic-multiple form-control custom-select product_attribute" name="ProductAttribute[]" id="ProductAttribute">
             <option value="">select</option>
             @foreach($ProductAttribute as $pa)
             <option value="{{$pa->id}}" {{isset($Product_Attributes_Assoc->product_attribute_id) && $pa->id == $Product_Attributes_Assoc->product_attribute_id ? 'selected':'' }} >{{$pa->name}}</option>
             @endforeach
             </select></td>
-            <td><select class="js-example-basic-multiple form-control custom-select productattributevalue" name="productattributevalue[]" id="productattributevalue">
+            <td style="width:33.33%"><select class="js-example-basic-multiple form-control custom-select productattributevalue" name="productattributevalue[]" id="productattributevalue">
             <option value="" >select</option>
             @if(isset($Product_Attributes_Assoc->product_attribute_id) && array_key_exists($Product_Attributes_Assoc->product_attribute_id,$product_atb_value))
                 @foreach($product_atb_value[$Product_Attributes_Assoc->product_attribute_id] as $pavid)
@@ -62,7 +64,15 @@
                 @endforeach
             @endif
             </select> </td>
-            <!-- <td><button type="button" id="remove" name="remove" class="btn btn-info">Remove</button></td> -->
+            @if($q==1)
+            <td><button type="button" id="addproductatb" name="addproductatb" class="btn btn-info">Add</button></td>
+            @endif
+            @if($q!=1)
+            <td style="width:20.33%"><button type="button" id="remove_attribute" name="remove_attribute" class="btn btn-info">Remove attribute</button></td>
+            @endif
+            @php
+            $q++;
+            @endphp
         @endforeach    
     
     @else
@@ -76,10 +86,10 @@
     <td><select class="js-example-basic-multiple form-control custom-select productattributevalue" name="productattributevalue[]" id="productattributevalue">
     <option value="">select</option>      
     </select> </td>
+    <label for="productattributevalue" class="error" style="display: none;float: left;"></label>
     @endif
-    <td><button type="button" id="addproductatb" name="addproductatb" class="btn btn-info">Add</button>
-    <!-- <button type="button" id="remove" name="remove" class="btn btn-info">Remove</button> -->
-    </td></tr>
+    <td><button type="button" id="addproductatb" name="addproductatb" class="btn btn-info">Add</button></td>
+    </tr>
       
 </table>
 </div>
@@ -133,12 +143,12 @@
 </div>
 <div class="form-group {{ $errors->has('meta_description') ? 'has-error' : ''}}">
     <label for="meta_description" class="control-label">{{ 'Meta Description' }}</label>
-    <textarea class="form-control" rows="5" name="meta_description" type="textarea" id="meta_description" >{{ isset($product->meta_description) ? $product->meta_description : ''}}</textarea>
+    <textarea class="form-control ckeditor_field" rows="5" name="meta_description" type="textarea" id="meta_description" >{{ isset($product->meta_description) ? $product->meta_description : ''}}</textarea>
     {!! $errors->first('meta_description', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('meta_keywords') ? 'has-error' : ''}}">
     <label for="meta_keywords" class="control-label">{{ 'Meta Keywords' }}</label>
-    <textarea class="form-control" rows="5" name="meta_keywords" type="textarea" id="meta_keywords" >{{ isset($product->meta_keywords) ? $product->meta_keywords : ''}}</textarea>
+    <textarea class="form-control ckeditor_field" rows="5" name="meta_keywords" type="textarea" id="meta_keywords" >{{ isset($product->meta_keywords) ? $product->meta_keywords : ''}}</textarea>
     {!! $errors->first('meta_keywords', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('created_by') ? 'has-error' : ''}}">
@@ -157,7 +167,7 @@
     <label><input name="status" type="radio" value="1" {{ (isset($product) && 1 == $product->status) ? 'checked' : '' }}> Yes</label>
 </div>
 <div class="radio">
-    <label><input name="status" type="radio" value="0" @if (isset($product)) {{ (0 == $product->status) ? 'checked' : '' }} @else {{ 'checked' }} @endif> No</label>
+    <label><input name="status" type="radio" value="0" @if (isset($product)) {{ (0 == $product->status) ? 'checked' : '' }}  @endif> No</label>
 </div>
     {!! $errors->first('status', '<p class="help-block">:message</p>') !!}
 </div>
@@ -168,7 +178,6 @@
 </div>
 
 <script type="text/javascript">    
-//    console.log($("#ProductAttribute #foo").children(":selected").val());
 var abc = [];
     <?php foreach($Product_Attributes_Assoc as $key => $val){ ?>
         abc.push('<?php echo $val; ?>');
@@ -178,7 +187,7 @@ console.log(abc);
     // add row for image
     $("#addRow").click(function () {
         var html = '';
-        html += '<div id="inputFormRow">';
+        html += '<div id="inputFormRow ">';
         html += '<div class="input-group mb-3">';
         html += '<input type="file" name="product_image_name[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">';
         html += '<div class="input-group-append">';
@@ -197,14 +206,14 @@ console.log(abc);
     $(document).on('click', '#Row', function () {
         $(this).closest('#inputFormRow').remove();
     });
-   
+   // $("#remove_attribute").click(function () {
+    $(document).on('click', '#remove_attribute', function () {
+        $(this).closest('.removeatbfiled').remove();
+    });
 
     // for attribte value
     $(document).on('change','.product_attribute',function(){  
     var productatbid = $(this).val();
-    // console.log(productatbid);
-    // var xy = $("#ProductAttribute").children(":selected").val();
-    // $('select[name=selector] option').filter(':selected').val()
   
      var current = $(this);
      console.log(current);
@@ -243,23 +252,31 @@ console.log(abc);
         $("#addproductatb").click(function () {
         var html ='';
         html +='<table style="width:100%" >';
-        html +='<tr colspan="2">';
-        html +='<td><select name="ProductAttribute[]" class="js-example-basic-multiple form-control custom-select product_attribute"><option value="">select</option>';
+        html +='<tr colspan="2" class="removeatbfiled" >';
+        html +='<td style="width:33.33%"><select name="ProductAttribute[]" class="js-example-basic-multiple form-control custom-select product_attribute"><option value="">select</option>';
         $.each(productjattribute, function(val, text) {
                     var x = JSON.parse(text);
                     html +='<option value="'+x.id+'">'+x.name+'</option>'
                 //  console.log(x.name);
                 });
         html +='</select></td>';
-        html +='<td><select name="productattributevalue[]" class="js-example-basic-multiple form-control custom-select productattributevalue" id="productattributevalue" ><option value="">select</option> </select></td>';
-        html +=' <td><button type="button" id="remove" name="remove" class="btn btn-info">Remove</button></td>';
+        html +='<td style="width:33.33%"><select name="productattributevalue[]" class="js-example-basic-multiple form-control custom-select productattributevalue" id="productattributevalue" ><option value="">select</option> </select></td>';
+        html +='<td><button type="button" id="remove_attribute" name="remove_attribute" class="btn btn-info">Remove attribute</button></td>';
         html +='</tr>';
         html +='</table>';
         $('#rowproductatb').append(html);
         
         
         });
-       
-        
 
+
+
+
+// CKEDITOR.replace('ckeditor_field');
+// $(".ckeditor_field").ckeditor();
 </script>
+
+<script src="{{asset('admin/js/product_form_validation.js')}}"> </script>
+<!-- <script>
+        CKEDITOR.replace( 'meta_description' );
+</script> -->

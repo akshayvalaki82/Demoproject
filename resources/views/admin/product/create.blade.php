@@ -34,7 +34,7 @@
                             </ul>
                         @endif
 
-                        <form method="POST" action="{{ url('/admin/product') }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                        <form method="POST" name="product_form_validation" id="product_form_validation" action="{{ url('/admin/product') }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
                             {{ csrf_field() }}
 
                             @include ('admin.product.form', ['formMode' => 'create'])

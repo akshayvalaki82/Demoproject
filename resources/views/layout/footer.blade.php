@@ -52,4 +52,6 @@
 <script src="{{ asset('admin/js/demo.js')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <!-- <script src="{{ asset('admin/js/dashboard.js')}}"></script> -->
+<script src="{{ asset('admin/js/jquery.validate.min.js')}}"></script>
+<!-- <script src="{{asset('admin/js/ckeditor.js')}}"></script> -->
 @yield('js')
