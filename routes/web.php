@@ -25,9 +25,13 @@ Route::get('/admin/userss', function () {
 Route::get('/form', function () {
   return view('user/form');
 });
-// Route::get('/test', function () {
-//   return view('test');
-// });
+Route::get('/test', function () {
+  return view('frontend/layout/test');
+});
+Route::get('/loginpage', function () {
+  return view('frontend/all_page/login');
+});
+
 // Route::get('/app', function () {
 //   return view('layouts/app');
 // });

@@ -4,6 +4,7 @@
     {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
 </div>
 <label for="name" class="control-label">{{ 'Product Image' }}</label>
+<span id="errorforimage" style="color: red; visibility: hidden;"><b> **Required</b></span>
 <div class="row">
         <div class="col-lg-12">
             @if(!empty($product_images_name))
@@ -31,10 +32,7 @@
                     <div id="inputFormRow">
                         <div class="input-group mb-3">
                             <input type="file" id="product_image_name" name="product_image_name[]" class=" m-input"  autocomplete="off">
-                            <!-- <p id="errorforimage"></p> -->
-                            <p id="errorforimage" style="color: red; visibility: hidden;">**required</p>
-                            <!-- <label for="product_image_name" class="error"></label> -->
-                            <!-- <label id="errorforimage" class="error" for="name">*Required</label> -->
+                           
                             <p id="output"></p> 
                         </div>
                     </div>
@@ -176,7 +174,7 @@
 
 
 <div class="form-group">
-    <input class="btn btn-primary" type="submit" value="{{ $formMode === 'edit' ? 'Update' : 'Create' }}">
+    <input class="btn btn-primary" id="createsubmit" type="submit" value="{{ $formMode === 'edit' ? 'Update' : 'Create' }}">
 </div>
 
 <script type="text/javascript">    
@@ -270,16 +268,17 @@ console.log(abc);
         
         
         });
-    // ffor image validation
-    $("product_form_validation").submit(function(){
+    // for image validation requrried
+    $("#createsubmit").click(function(){
         let yw = $('product_image_name');
-        const size = (this.files[0].size);
-        console.log(size);
-        if(size == 0)
+        console.log(yw.length);
+        if(yw.length == 0)
         {
             $("#errorforimage").css('visibility','visible');
         }
+
     });  
+    // for image validation size
     $('#product_image_name').on('change', function() { 
     let yw = $('product_image_name');
       
@@ -293,16 +292,21 @@ console.log(abc);
     } else{ 
         $("#output").html('<b>' + 
             'This file size is: ' + size + " MB" + '</b>'); 
+        $("#errorforimage").css('visibility','hidden');    
     } 
     }); 
 
 
 
 // CKEDITOR.replace('ckeditor_field');
-// $(".ckeditor_field").ckeditor();
+
 </script>
 
 <script src="{{asset('admin/js/product_form_validation.js')}}"> </script>
-<!-- <script>
-        CKEDITOR.replace( 'meta_description' );
-</script> -->
+<script src="{{asset('admin/js/ckeditor.js')}}"></script>
+<script>
+    
+    // $(".ckeditor_field").ckeditor();
+    // var desc = CKEDITOR.instances['.ckeditor_field'].getData();
+        // CKEDITOR.replace( 'meta_description' );
+</script>

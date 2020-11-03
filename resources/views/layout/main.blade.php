@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="{{asset('admin/css/select2.min.css')}}">
   <!-- for select multipal js file -->
   <script src="{{asset('admin/js/select2.min.js')}}"></script>
-  <script src="{{asset('admin/css/product_form_validation.css')}}"></script>
+  <!-- <script src="{{asset('admin/css/product_form_validation.css')}}"></script> -->
   <script src="{{asset('admin/js/ckeditor.js')}}"></script>
 </head>
    
