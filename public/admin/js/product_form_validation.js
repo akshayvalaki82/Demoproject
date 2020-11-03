@@ -14,7 +14,7 @@ $(document).ready(function(){
             },
             product_image_name:{
                 required:true,
-                extension: "jpeg|jpg"
+                // extension: "jpeg|jpg"
             },
             productattributevalue:{
                 valueNotEquals:"select",
@@ -73,7 +73,7 @@ $(document).ready(function(){
             },
             product_image_name:{
                 required:"*Required",
-                extension:"jpeg and jpg file are allowed"
+                // extension:"jpeg and jpg file are allowed"
             },
             productattributevalue:{
                 valueNotEquals:"*Required",

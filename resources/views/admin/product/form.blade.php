@@ -31,6 +31,11 @@
                     <div id="inputFormRow">
                         <div class="input-group mb-3">
                             <input type="file" id="product_image_name" name="product_image_name[]" class=" m-input"  autocomplete="off">
+                            <!-- <p id="errorforimage"></p> -->
+                            <p id="errorforimage" style="color: red; visibility: hidden;">**required</p>
+                            <!-- <label for="product_image_name" class="error"></label> -->
+                            <!-- <label id="errorforimage" class="error" for="name">*Required</label> -->
+                            <p id="output"></p> 
                         </div>
                     </div>
             @endif
@@ -64,11 +69,8 @@
                 @endforeach
             @endif
             </select> </td>
-            @if($q==1)
-            <td><button type="button" id="addproductatb" name="addproductatb" class="btn btn-info">Add</button></td>
-            @endif
             @if($q!=1)
-            <td style="width:20.33%"><button type="button" id="remove_attribute" name="remove_attribute" class="btn btn-info">Remove attribute</button></td>
+            <td style="width:20.33%"><button type="button" id="remove_attribute" name="remove_attribute" class="btn btn-info">-</button></td>
             @endif
             @php
             $q++;
@@ -76,26 +78,26 @@
         @endforeach    
     
     @else
-    <tr><td> <select class="js-example-basic-multiple form-control custom-select product_attribute" name="ProductAttribute[]" id="ProductAttribute">
+    <tr><td style="width:33.33%"> <select class="js-example-basic-multiple form-control custom-select product_attribute" name="ProductAttribute[]" id="ProductAttribute">
     <option value="">select</option>
     @foreach($ProductAttribute as $pa)
     <option value="{{$pa->id}}">{{$pa->name}}</option>
     @endforeach
     </select></td>
     
-    <td><select class="js-example-basic-multiple form-control custom-select productattributevalue" name="productattributevalue[]" id="productattributevalue">
+    <td style="width:33.33%"><select class="js-example-basic-multiple form-control custom-select productattributevalue" name="productattributevalue[]" id="productattributevalue">
     <option value="">select</option>      
     </select> </td>
+    <td></td>
     <label for="productattributevalue" class="error" style="display: none;float: left;"></label>
     @endif
-    <td><button type="button" id="addproductatb" name="addproductatb" class="btn btn-info">Add</button></td>
-    </tr>
-      
+    </tr>      
 </table>
 </div>
 <table>
 <div id="rowproductatb"></div>
 </table>
+<button type="button" id="addproductatb" name="addproductatb" class="btn btn-info">+</button>
 <div class="form-group {{ $errors->has('sku') ? 'has-error' : ''}}">
     <label for="sku" class="control-label">{{ 'Sku' }}</label>
     <input class="form-control" name="sku" type="text" id="sku" value="{{ isset($product->sku) ? $product->sku : ''}}" >
@@ -164,7 +166,7 @@
 <div class="form-group {{ $errors->has('status') ? 'has-error' : ''}}">
     <label for="status" class="control-label">{{ 'Status' }}</label>
     <div class="radio">
-    <label><input name="status" type="radio" value="1" {{ (isset($product) && 1 == $product->status) ? 'checked' : '' }}> Yes</label>
+    <label><input name="status" type="radio" value="1" {{ (isset($product) && 1 == $product->status) ? 'checked' : '' }}> Yes <br></label>
 </div>
 <div class="radio">
     <label><input name="status" type="radio" value="0" @if (isset($product)) {{ (0 == $product->status) ? 'checked' : '' }}  @endif> No</label>
@@ -261,14 +263,38 @@ console.log(abc);
                 });
         html +='</select></td>';
         html +='<td style="width:33.33%"><select name="productattributevalue[]" class="js-example-basic-multiple form-control custom-select productattributevalue" id="productattributevalue" ><option value="">select</option> </select></td>';
-        html +='<td><button type="button" id="remove_attribute" name="remove_attribute" class="btn btn-info">Remove attribute</button></td>';
+        html +='<td><button type="button" id="remove_attribute" name="remove_attribute" class="btn btn-info">-</button></td>';
         html +='</tr>';
         html +='</table>';
         $('#rowproductatb').append(html);
         
         
         });
-
+    // ffor image validation
+    $("product_form_validation").submit(function(){
+        let yw = $('product_image_name');
+        const size = (this.files[0].size);
+        console.log(size);
+        if(size == 0)
+        {
+            $("#errorforimage").css('visibility','visible');
+        }
+    });  
+    $('#product_image_name').on('change', function() { 
+    let yw = $('product_image_name');
+      
+    const size = (this.files[0].size);
+    // console.log (this.files[0].size); 
+    // console.log (size); 
+    
+    if (size > 4000 || size < 2000) { 
+        document.getElementById('product_image_name').value= null;
+        alert("File must be between the size of 2-4 "); 
+    } else{ 
+        $("#output").html('<b>' + 
+            'This file size is: ' + size + " MB" + '</b>'); 
+    } 
+    }); 
 
 
 

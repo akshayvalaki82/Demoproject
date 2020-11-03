@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+// use App\Http\Controllers\CouponController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,3 +56,5 @@ Route::resource('admin/product', 'Admin\ProductController');
 Route::post('/admin/product/get-attribute-value', 'Admin\ProductController@getAttributeValue');
 
 Route::post('/admin/product/get-attribute-value-new', 'Admin\ProductController@getAttributeValuenew');
+
+Route::resource('admin/coupon', 'Admin\CouponController');

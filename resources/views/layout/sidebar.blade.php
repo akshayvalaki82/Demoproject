@@ -86,6 +86,13 @@
             </a>
           </li>
 
+          <li>
+          <a href="{{ url('admin/coupon') }}" class="nav-link {{ request()->is('admin/coupon/*') || request()->is('admin/coupon') ? 'active' : ''}} ">
+              <p>
+              coupon 
+              </p>
+            </a>
+          </li>
           </li>
       </nav>
       <!-- /.sidebar-menu -->
