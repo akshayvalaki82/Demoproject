@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin\Banner ;
 use App\Models\Admin\Category ;
+use App\Product_Categories;
+use App\Models\Admin\Product;
 
 
 class MainpageController extends Controller
@@ -18,7 +20,11 @@ class MainpageController extends Controller
     {
         $banner = Banner::all();
         $category = Category::all();
-        //  dd($category);
+        $product = Product::all();
+        $product_cateories = Product_Categories::all();
+
+        dd($product_cateories);
+        //  dd($product);
         return view('frontend.layout.mainpage',compact('banner','category'));
     }
 

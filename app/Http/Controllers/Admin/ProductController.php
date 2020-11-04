@@ -8,8 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Product;
 use App\Product_Images;
 use App\Product_Attributes_Assoc;
+use App\Product_Categories;
 use App\Product_Attribute_Values;
 use App\Models\Admin\ProductAttribute;
+use App\Models\Admin\Category;
 use Illuminate\Http\Request;
 use carbon\carbon;
 
@@ -58,8 +60,9 @@ class ProductController extends Controller
         $ProductAttribute = ProductAttribute::all();
         $Product_Attribute_Values = Product_Attribute_Values::all();
         $Product_Attributes_Assoc = [];
-        // dd($ProductAttribute);   
-        return view('admin.product.create',compact('ProductAttribute','Product_Attribute_Values','Product_Attributes_Assoc'));
+        $Category = Category::all();
+        //  dd($Category);   
+        return view('admin.product.create',compact('ProductAttribute','Product_Attribute_Values','Product_Attributes_Assoc','Category'));
     }
 
     /**
@@ -140,6 +143,20 @@ class ProductController extends Controller
         if(!empty($productvaluearry)){
             Product_Attributes_Assoc::insert( $productvaluearry);
         }
+
+        // for adding the categorys
+        $category=[];
+        $category[]=[
+            'product_id' => $product->id,
+            'category_id' => request('categorys'),
+            'created_at' =>  Carbon::now(),
+            'updated_at' =>  Carbon::now() 
+        ];
+        if(!empty($category)){
+            Product_Categories::insert($category);
+        }
+        // $categorys = request('categorys');
+        // dd($categorys);
         return redirect('admin/product')->with('flash_message', 'Product added!');
     }
 
@@ -178,8 +195,11 @@ class ProductController extends Controller
             {
                 $product_atb_value[$pav['product_attribute_id']][] = $pav;
             }
-        }  
-        return view('admin.product.edit', compact('product','product_images_name','ProductAttribute','Product_Attribute_Values','Product_Attributes_Assoc','product_atb_value'));
+        }
+        $Category = Category::all();
+        $cate = Product_Categories::where('product_id',$id)->get(); 
+        $categoryid = $cate[0]->category_id; 
+        return view('admin.product.edit', compact('product','product_images_name','ProductAttribute','Product_Attribute_Values','Product_Attributes_Assoc','product_atb_value','Category','categoryid'));
     }
 
     /**
@@ -294,6 +314,20 @@ class ProductController extends Controller
         if(!empty($productvaluearry)){
             Product_Attributes_Assoc::insert( $productvaluearry);
         }
+        // for deleting a categorys
+        // dd($id);
+        Product_Categories::where('product_id',$id)->delete();
+         // for adding the categorys
+         $category=[];
+         $category[]=[
+             'product_id' => $product->id,
+             'category_id' => request('categorys'),
+             'created_at' =>  Carbon::now(),
+             'updated_at' =>  Carbon::now() 
+         ];
+         if(!empty($category)){
+             Product_Categories::insert($category);
+         }
 
         return redirect('admin/product')->with('flash_message', 'Product updated!');
     }

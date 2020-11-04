@@ -96,6 +96,18 @@
 <div id="rowproductatb"></div>
 </table>
 <button type="button" id="addproductatb" name="addproductatb" class="btn btn-info">+</button>
+
+<div class="form-group {{ $errors->has('categorys') ? 'has-error' : ''}}">
+    <label for="categorys" class="control-label">{{ 'categorys' }}</label> <br>
+    <select class="js-example-basic-multiple form-control custom-select" name="categorys" id="categorys">
+        <option value="">select</option>
+        @foreach($Category as $cat)
+        <option value="{{$cat->id}}" {{ isset($categoryid) && $cat->id == $categoryid ? 'selected':'' }} > {{$cat->name}} </option>
+        @endforeach
+    </select>
+    {!! $errors->first('categorys', '<p class="help-block">:message</p>') !!}
+</div>
+
 <div class="form-group {{ $errors->has('sku') ? 'has-error' : ''}}">
     <label for="sku" class="control-label">{{ 'Sku' }}</label>
     <input class="form-control" name="sku" type="text" id="sku" value="{{ isset($product->sku) ? $product->sku : ''}}" >
@@ -273,7 +285,7 @@ console.log(abc);
 
 </script>
 
-<script src="{{asset('admin/js/product_form_validation.js')}}"> </script>
+<!-- <script src="{{asset('admin/js/product_form_validation.js')}}"> </script> -->
 <script src="{{asset('admin/js/ckeditor.js')}}"></script>
 <script>
     
