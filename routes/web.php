@@ -25,9 +25,9 @@ Route::get('/admin/userss', function () {
 Route::get('/form', function () {
   return view('user/form');
 });
-Route::get('/test', function () {
-  return view('frontend/layout/test');
-});
+// Route::get('/main_page', function () {
+//   return view('frontend/layout/main_page');
+// });
 Route::get('/loginpage', function () {
   return view('frontend/all_page/login');
 });
@@ -62,3 +62,5 @@ Route::post('/admin/product/get-attribute-value', 'Admin\ProductController@getAt
 Route::post('/admin/product/get-attribute-value-new', 'Admin\ProductController@getAttributeValuenew');
 
 Route::resource('admin/coupon', 'Admin\CouponController');
+
+Route::resource('mainpage','Frontend\MainpageController');

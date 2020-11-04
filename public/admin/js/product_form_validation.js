@@ -130,4 +130,31 @@ $(document).ready(function(){
 
         }
     });
+    // for image validation requrried
+    $("#createsubmit").click(function(){
+        let yw = $('product_image_name');
+        console.log(yw.length);
+        if(yw.length == 0)
+        {
+            $("#errorforimage").css('visibility','visible');
+        }
+
+    });  
+    // for image validation size
+    $('#product_image_name').on('change', function() { 
+    let yw = $('product_image_name');
+      
+    const size = (this.files[0].size);
+    // console.log (this.files[0].size); 
+    // console.log (size); 
+    
+    if (size > 4000 || size < 2000) { 
+        document.getElementById('product_image_name').value= null;
+        alert("File must be between the size of 2-4 "); 
+    } else{ 
+        $("#output").html('<b>' + 
+            'This file size is: ' + size + " MB" + '</b>'); 
+        $("#errorforimage").css('visibility','hidden');    
+    } 
+    }); 
 });
