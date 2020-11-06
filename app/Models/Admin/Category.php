@@ -30,6 +30,16 @@ class Category extends Model
     public function parent()
     {
         return $this->belongsTo('App\Models\Admin\Category', 'parent_id', 'id');
+    }   
+
+    public function child()
+    {
+        return $this->hasMany('App\Models\Admin\Category','parent_id','id');
     }
+
+    // function getcategoriesproduct()
+    // {
+    //     return $this-> hasMany('App\Product_Categories');
+    // }
     
 }

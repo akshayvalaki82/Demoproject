@@ -19,13 +19,13 @@ class MainpageController extends Controller
     public function index()
     {
         $banner = Banner::all();
-        $category = Category::all();
         $product = Product::all();
         $product_cateories = Product_Categories::all();
-
-        dd($product_cateories);
-        //  dd($product);
-        return view('frontend.layout.mainpage',compact('banner','category'));
+        $category = Category::with('child')->whereNull('parent_id')->get()->toArray();
+        //  dd($product_cateories);
+        //   dd($category);
+        // $productdetils = [];
+        return view('frontend.layout.mainpage',compact('banner','category','product_cateories'));
     }
 
     /**

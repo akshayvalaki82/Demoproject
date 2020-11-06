@@ -64,3 +64,5 @@ Route::post('/admin/product/get-attribute-value-new', 'Admin\ProductController@g
 Route::resource('admin/coupon', 'Admin\CouponController');
 
 Route::resource('mainpage','Frontend\MainpageController');
+
+Route::POST('/mainpage/get-product-details','Admin\ProductController@getproductdetails');

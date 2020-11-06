@@ -87,7 +87,7 @@
     <option value="">select</option>      
     </select> </td>
     <td></td>
-    <label for="productattributevalue" class="error" style="display: none;float: left;"></label>
+    <!-- <label for="productattributevalue" class="error" style="display: none;float: left;"></label> -->
     @endif
     </tr>      
 </table>
@@ -239,16 +239,18 @@ console.log(abc);
                 },
                success:function(data) {
                 // $("#data").html(data.msg);
-                //   console.log(data);
+                  console.log(data);
                 //  console.log(data.attribute_value);
                 var html = '';
                 html +='<option value="">select</option>';
                 $.each(data.attribute_value, function(val, text) {
                     html +='<option value="'+text.id+'" >'+text.attribute_value+'</option>'
-                //  console.log(text);
+                 console.log(text);
                 });
+                // for all product attribute value
                 current.parent().next().find('.productattributevalue').html(html);
                 // console.log(parent.next.find('productattributevalue'));
+                // for single product attribute value
                 // $('#productattributevalue').html(html)               
                 }
             });
@@ -260,6 +262,7 @@ console.log(abc);
         productjattribute.push('<?php echo $val; ?>');
     <?php } ?>
     //  console.log(productjattribute);
+    
     // on click boutton of add
         $("#addproductatb").click(function () {
         var html ='';

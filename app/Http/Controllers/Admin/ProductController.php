@@ -347,15 +347,25 @@ class ProductController extends Controller
     }
 
     public function getAttributeValue(Request $request){
-        //  console.log((request('product_attribute_id')));
        $productattributeid = Product_Attribute_Values::where('product_attribute_id',request('product_attribute_id'))->get();
         //  dd($request->all());
         return response()->json(array('attribute_value'=> $productattributeid), 200);
     }
     public function getAttributeValuenew(Request $request){
-        //  console.log((request('product_attribute_id')));
        $productattributeid = Product_Attribute_Values::where('product_attribute_id',request('product_attribute_id'))->get();
         //  dd($request->all());
         return response()->json(array('attribute_value'=> $productattributeid), 200);
+    }
+    public function getproductdetails(Request $request){
+        //  dd(request('id'));
+        // getproductimage
+       $product_details = Product::with(['getProductImage','getProductCategory'])->whereHas('getProductCategory',function($query) use($request) {
+        $query->where('categories.id',$request->id);
+        })->get()->toArray();        
+        // dd($product_details);
+        return response()->json(array('product_details'=>$product_details));
+      
+
+
     }
 }
