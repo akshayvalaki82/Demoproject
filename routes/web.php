@@ -66,3 +66,5 @@ Route::resource('admin/coupon', 'Admin\CouponController');
 Route::resource('mainpage','Frontend\MainpageController');
 
 Route::POST('/mainpage/get-product-details','Admin\ProductController@getproductdetails');
+
+Route::POST('/mainpage/get-product-parent-details','Admin\ProductController@getproductparentdetails');

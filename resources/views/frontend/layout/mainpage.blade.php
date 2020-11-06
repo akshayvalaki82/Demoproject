@@ -140,34 +140,11 @@
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Features Items</h2>
-						<!-- <div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products">
-										<div class="productinfo text-center">
-											<img src="{{asset ('frontend/image/product1.jpg')}}" alt="" />
-											<h2>$56</h2>
-											<p>Easy Polo Black Edition</p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-										</div>
-										<div class="product-overlay">
-											<div class="overlay-content">
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-										</div>
-								</div>
-								<div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-									</ul>
-								</div>
-							</div>
-						</div> -->
-						
-						<div class="col-sm-4 productdetailsvalue">
+						<div class="col-sm-4 ">
 							<!-- append the code of image -->
+							<div class="productdetailsvalue">
+
+							</div>
 						
 						</div>						
 						
@@ -183,12 +160,26 @@
 <script>
 	$(document).on('click','.products_id a',function(){  
         var product_id = $(this).attr("data-productid");
-         console.log(product_id);
+        //  console.log(product_id);
+		//  console.log('djajhdb');
+		$.ajax({
+			type:'POST',
+			url:'{{url("/mainpage/get-product-parent-details") }}',
+			datatype:'json',
+			data:{
+				"_token" : "{{ csrf_token() }}",
+				"id" : product_id,
+			},
+			success:function(data){
+				 x(data);					
+			}
+			
+		});
 	})
 	$(document).on('click','.products_id li',function(){  
         var product_id = $(this).attr("data-productid");
-         console.log(product_id);
-   
+        //  console.log(product_id);
+		
 		$.ajax({
 			type:'POST',
 			url:'{{url("/mainpage/get-product-details") }}',
@@ -198,7 +189,14 @@
 				"id" : product_id,
 			},
 			success:function(data){
-				// $productdetils = data;
+				x(data);		
+			}
+			
+		});
+	})
+	function x(data)
+	{
+		// $productdetils = data;
 				// console.log($productdetils.product_details);
 				var html ='';
 				$.each(data.product_details,function(val,text){
@@ -206,10 +204,8 @@
 				// console.log(text);
 				html +='<div class="product-image-wrapper">';		
 				html +='<div class="single-products">';				
-				html +='<div class="productinfo text-center">';					
-				// html +='<img src="{{asset("'+'admin/product_image/'+text.get_product_image[0].image_name+")}}"+' />'
-				// html +='<img src="{{asset("\'admin/product_image/\''+text.get_product_image[0].image_name+")}}"+'alt="" />';
-				html +='<img src="{{asset ('frontend/image/product1.jpg')}}" alt="" />';						
+				html +='<div class="productinfo text-center">';		
+				html +=`<img src="{{asset('admin/product_image/${text.get_product_image[0].image_name}')}}" width="100" height="200" />`
 				html +='<h2>$'+text.price+' </h2>';						
 				html +='<p>'+text.name+'</p>';						
 				html +='<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>';						
@@ -230,9 +226,6 @@
 				html +='</div>';				
 				html +='</div>';
 			});
-				$('.productdetailsvalue').html(html)			
-			}
-			
-		});
-	})
+				$('.productdetailsvalue').html(html)				
+	}
 </script>
