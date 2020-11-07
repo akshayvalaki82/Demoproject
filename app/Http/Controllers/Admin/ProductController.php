@@ -350,6 +350,13 @@ class ProductController extends Controller
     // for product display 
     public function getproductdetails(Request $request)
     {
+        if($request->id == null)
+        {
+            $all_product_details = Product::with(['getProductImage', 'getProductCategory'])->get();
+            //  dd($all_product_details);
+            return response()->json(array('product_details' => $all_product_details));
+        }
+        else{
         $product_details = Product::with(['getProductImage', 'getProductCategory'])->whereHas('getProductCategory', function ($query) use ($request) {
             // for chaking the what is element parent ya chaild 
             if ($request->parent_id) {
@@ -359,6 +366,7 @@ class ProductController extends Controller
             }
         })->get()->toArray();
         return response()->json(array('product_details' => $product_details));
+    }
     }
     public function getallproductdetails()
     {

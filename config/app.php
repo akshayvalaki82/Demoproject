@@ -213,5 +213,7 @@ return [
         'HTML' => Collective\Html\HtmlFacade::class,
 
     ],
+    'admin_name'=> 'admin',
+    'customer_name'=>'customer',
 
 ];

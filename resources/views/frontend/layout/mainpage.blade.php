@@ -158,24 +158,32 @@
 <script>
 	$(document).ready(function(){
 			// console.log('hidjhsa');
-			$.ajax({
-				type:'post',
-				url:'{{url("/mainpage/get-all-products")}}',
-				datatype:'json',
-				data:{
-					"_token":"{{ csrf_token() }}",
-				},
-				success:function(data){
-					display_product(data);		
-			}
-			})
+			var product_id = null;
+			var parent_product_id = null;
+			ajax(product_id,parent_product_id);
+			// $.ajax({
+			// 	type:'post',
+			// 	url:'{{url("/mainpage/get-all-products")}}',
+			// 	datatype:'json',
+			// 	data:{
+			// 		"_token":"{{ csrf_token() }}",
+			// 	},
+			// 	success:function(data){
+			// 		display_product(data);		
+			// }
+			// })
 
 	})
 	$(document).on('click','.products_id ',function(){  
         var product_id = $(this).attr("data-productid");
         var parent_product_id = $(this).attr("data-parentid");
-        //  console.log(parent_product_id);
+				//  console.log(parent_product_id);
+				ajax(product_id,parent_product_id);
 		
+		
+	})
+	function ajax(product_id,parent_product_id)
+	{
 		$.ajax({
 			type:'POST',
 			url:'{{url("/mainpage/get-product-details") }}',
@@ -186,13 +194,8 @@
 				"parent_id": parent_product_id,
 			},
 			success:function(data){
-				display_product(data);		
-			}
-			
-		});
-	})
-	function display_product(data)
-	{
+				// display_product(data);		
+		
 		// $productdetils = data;
 				// console.log($productdetils.product_details);
 				var html ='';
@@ -228,6 +231,9 @@
 				html +='</div>';
 				}
 			});
-				$('.productdetailsvalue').html(html)				
+				$('.productdetailsvalue').html(html)
+			}
+			
+		});				
 	}
 </script>

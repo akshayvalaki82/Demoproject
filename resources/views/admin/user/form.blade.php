@@ -53,7 +53,7 @@
     <label for="role" class="control-label">{{ 'Role' }}</label><span style="color: red;" >{{' *'}}</span>
    
     <!-- <select multiple name="role" class="form-control" id="role" > -->
-    <select class="js-example-basic-multiple form-control custom-select" name="role[]" multiple="multiple">    
+    <select class=" form-control custom-select" name="role[]" >    
     <option value="select">select</option>
     
     @foreach($roles as $rs) 
