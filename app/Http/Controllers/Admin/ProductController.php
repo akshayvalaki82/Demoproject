@@ -360,18 +360,24 @@ class ProductController extends Controller
         //  dd(request('id'));
         // getproductimage
        $product_details = Product::with(['getProductImage','getProductCategory'])->whereHas('getProductCategory',function($query) use($request) {
+        if($request->parent_id)
+        {
+            $query->where('categories.parent_id',$request->id);
+        }
+        else{
         $query->where('categories.id',$request->id);
+        }
         })->get()->toArray();        
-        // dd($product_details);
         return response()->json(array('product_details'=>$product_details));
+        
     }
-    public function getproductparentdetails(Request $request){
-        //  dd(request('id'));
-        // getproductimage
-       $product_details = Product::with(['getProductImage','getProductCategory'])->whereHas('getProductCategory',function($query) use($request) {
-        $query->where('categories.parent_id',$request->id);
-        })->get()->toArray();        
-        // dd($product_details);
-        return response()->json(array('product_details'=>$product_details));
-    }
+    // public function getproductparentdetails(Request $request){
+    //     //  dd(request('id'));
+    //     // getproductimage
+    //    $product_details = Product::with(['getProductImage','getProductCategory'])->whereHas('getProductCategory',function($query) use($request) {
+    //     $query->where('categories.parent_id',$request->id);
+    //     })->get()->toArray();        
+    //     // dd($product_details);
+    //     return response()->json(array('product_details'=>$product_details));
+    // }
 }

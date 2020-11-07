@@ -81,9 +81,9 @@
 							$i=1;
 							@endphp				 -->
 							@foreach($category as $key => $value)
-								<div class="panel-heading products_id">
+								<div class="panel-heading ">
 									<h4 class="panel-title">
-										<a data-productid= "{{$value['id']}}" data-toggle="collapse" data-parent="#accordian" href="#sportswear{{$key}}">
+										<a class="products_id" data-parentid='1' data-productid= "{{$value['id']}}" data-toggle="collapse" data-parent="#accordian" href="#sportswear{{$key}}">
 											@if(!empty($value['child']))
 											<span id="" class="badge pull-right"><i class="fa fa-plus"></i></span>
 											@endif
@@ -93,10 +93,10 @@
 								</div>
 								@if(!empty($value['child']))
 								<div id="sportswear{{$key}}" class="panel-collapse collapse ">
-									<div class="panel-body products_id">
+									<div class="panel-body ">
 										<ul>
 										@foreach($value['child'] as $k => $v)
-											<li data-productid= "{{$v['id']}}" ><a class="fetchproductid" name href="#">{{$v['name']}}</a></li>
+											<li><a class="fetchproductid products_id" data-parentid='0' data-productid= "{{$v['id']}}"  href="javascript:void(0)">{{$v['name']}}</a></li>
 										@endforeach
 										</ul>
 									</div>
@@ -140,14 +140,10 @@
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Features Items</h2>
-						<div class="col-sm-4 ">
-							<!-- append the code of image -->
+							<!-- append the code of image of  -->
 							<div class="productdetailsvalue">
 
-							</div>
-						
-						</div>						
-						
+							</div>						
 					</div><!--features_items-->					
 					
 				</div>
@@ -158,27 +154,29 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script>
-	$(document).on('click','.products_id a',function(){  
-        var product_id = $(this).attr("data-productid");
-        //  console.log(product_id);
-		//  console.log('djajhdb');
-		$.ajax({
-			type:'POST',
-			url:'{{url("/mainpage/get-product-parent-details") }}',
-			datatype:'json',
-			data:{
-				"_token" : "{{ csrf_token() }}",
-				"id" : product_id,
-			},
-			success:function(data){
-				 x(data);					
-			}
+	// $(document).on('click','.products_id a',function(){  
+    //     var product_id = $(this).attr("data-productid");
+    //     //  console.log(product_id);
+	// 	//  console.log('djajhdb');
+	// 	$.ajax({
+	// 		type:'POST',
+	// 		url:'{{url("/mainpage/get-product-parent-details") }}',
+	// 		datatype:'json',
+	// 		data:{
+	// 			"_token" : "{{ csrf_token() }}",
+	// 			"id" : product_id,
+	// 		},
+	// 		success:function(data){
+	// 			 x(data);					
+	// 		}
 			
-		});
-	})
-	$(document).on('click','.products_id li',function(){  
+	// 	});
+	// })
+	$(document).on('click','.products_id ',function(){  
         var product_id = $(this).attr("data-productid");
-        //  console.log(product_id);
+        var parent_product_id = $(this).attr("data-parentid");
+
+        //  console.log(parent_product_id);
 		
 		$.ajax({
 			type:'POST',
@@ -187,6 +185,7 @@
 			data:{
 				"_token" : "{{ csrf_token() }}",
 				"id" : product_id,
+				"parent_id": parent_product_id,
 			},
 			success:function(data){
 				x(data);		
@@ -200,8 +199,11 @@
 				// console.log($productdetils.product_details);
 				var html ='';
 				$.each(data.product_details,function(val,text){
-				// console.log(text.get_product_image[0].image_name);
+				if(text.get_product_image.length>0)
+				{	
+				// console.log(text.get_product_image);
 				// console.log(text);
+				html +='<div class="col-sm-4 ">';
 				html +='<div class="product-image-wrapper">';		
 				html +='<div class="single-products">';				
 				html +='<div class="productinfo text-center">';		
@@ -225,6 +227,8 @@
 				html +='</ul>';					
 				html +='</div>';				
 				html +='</div>';
+				html +='</div>';
+				}
 			});
 				$('.productdetailsvalue').html(html)				
 	}
