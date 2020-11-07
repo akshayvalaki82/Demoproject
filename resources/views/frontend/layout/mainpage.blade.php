@@ -152,30 +152,28 @@
 	</section>
 @endsection
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script> -->
+<script src="{{asset('frontend/js/jquery.min.js')}}"></script>
+
 <script>
-	// $(document).on('click','.products_id a',function(){  
-    //     var product_id = $(this).attr("data-productid");
-    //     //  console.log(product_id);
-	// 	//  console.log('djajhdb');
-	// 	$.ajax({
-	// 		type:'POST',
-	// 		url:'{{url("/mainpage/get-product-parent-details") }}',
-	// 		datatype:'json',
-	// 		data:{
-	// 			"_token" : "{{ csrf_token() }}",
-	// 			"id" : product_id,
-	// 		},
-	// 		success:function(data){
-	// 			 x(data);					
-	// 		}
-			
-	// 	});
-	// })
+	$(document).ready(function(){
+			// console.log('hidjhsa');
+			$.ajax({
+				type:'post',
+				url:'{{url("/mainpage/get-all-products")}}',
+				datatype:'json',
+				data:{
+					"_token":"{{ csrf_token() }}",
+				},
+				success:function(data){
+					display_product(data);		
+			}
+			})
+
+	})
 	$(document).on('click','.products_id ',function(){  
         var product_id = $(this).attr("data-productid");
         var parent_product_id = $(this).attr("data-parentid");
-
         //  console.log(parent_product_id);
 		
 		$.ajax({
@@ -188,12 +186,12 @@
 				"parent_id": parent_product_id,
 			},
 			success:function(data){
-				x(data);		
+				display_product(data);		
 			}
 			
 		});
 	})
-	function x(data)
+	function display_product(data)
 	{
 		// $productdetils = data;
 				// console.log($productdetils.product_details);

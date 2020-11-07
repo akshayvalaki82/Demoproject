@@ -67,4 +67,4 @@ Route::resource('mainpage','Frontend\MainpageController');
 
 Route::POST('/mainpage/get-product-details','Admin\ProductController@getproductdetails');
 
-Route::POST('/mainpage/get-product-parent-details','Admin\ProductController@getproductparentdetails');
+Route::POST('/mainpage/get-all-products','Admin\ProductController@getallproductdetails');
