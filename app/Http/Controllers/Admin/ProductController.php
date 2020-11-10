@@ -375,3 +375,4 @@ class ProductController extends Controller
         return response()->json(array('product_details' => $all_product_details));
     }
 }
+// ->orderBy('name','asc')->offset(2)->limit(1)

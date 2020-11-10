@@ -16,11 +16,13 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
+        $admin_name = config('app.admin_name');
+        // dd($admin_name);
         // return $next($request);
         if(Auth::user()->hasRole($admin_name))
         {
         return $next($request);
         }
-        return redirect('/admin/auth/login');
+        return redirect('/login');
     }
 }

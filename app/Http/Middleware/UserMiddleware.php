@@ -17,10 +17,11 @@ class UserMiddleware
      */
     public function handle($request, Closure $next)
     {
+         $customer_name = config('app.customer_name'); 
         // return $next($request);
-            if(Auth::user()->hasRole($customer_name)){
+            if(Auth::user()->id){
                 return $next($request);
             }
-            return redirect('frontend/all_page/login');
+            return redirect('/user-login');
     }
 }

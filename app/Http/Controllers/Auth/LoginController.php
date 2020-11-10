@@ -39,18 +39,5 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function login(Request $request){
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-         // do whatever yo desire
-    
-        $admin_name = config('app.admin_name');
-        $customer_name = config('app.customer_name'); 
-        // dd($admin_name);
-
-        if(Auth::user()->hasRole($admin_name))
-        {
-            return redirect('frontend/all_page/login');
-        }
-        }
-    }
+   
 }

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Auth;
+// use Auth;
 // use App\Http\Controllers\CouponController;
 /*
 |--------------------------------------------------------------------------
@@ -29,9 +29,9 @@ Route::get('/form', function () {
 // Route::get('/main_page', function () {
 //   return view('frontend/layout/main_page');
 // });
-Route::get('/loginpage', function () {
-  return view('frontend/auth-page/login');
-});
+// Route::get('/user-login', function () {
+//   return view('frontend/auth-page/login');
+// });
 
 // Route::get('/app', function () {
 //   return view('layouts/app');
@@ -39,7 +39,7 @@ Route::get('/loginpage', function () {
 
 Auth::routes();
 
-Route::group(['AdminMiddleware' => 'AdminMid'], function () {
+Route::group(['middleware' => ['web']], function () {
 
   Route::get('/home', 'HomeController@index')->name('home');
 
@@ -65,9 +65,17 @@ Route::group(['AdminMiddleware' => 'AdminMid'], function () {
   Route::resource('admin/coupon', 'Admin\CouponController');
 });
 
-Route::group(['UserMiddleware' => 'UserMid'], function () {
+Route::group(['middleware' => ['web']], function () {
 
-  Route::resource('mainpage', 'Frontend\MainpageController');
+  Route::get('/user-login','Frontend\FrontendUserLoginConroller@index')->name('user-login');
+
+  Route::post('/submit-login','Frontend\FrontendUserLoginConroller@userlogin');
+
+  // Route::GET('/submit-user-register','Frontend\FrontendUserLoginConroller@userregister');
+
+  Route::post('mainpage/logout', 'Frontend\FrontendUserLoginConroller@logout');
+
+  Route::resource('/mainpage', 'Frontend\MainpageController');
 
   Route::POST('/mainpage/get-product-details', 'Admin\ProductController@getproductdetails');
 

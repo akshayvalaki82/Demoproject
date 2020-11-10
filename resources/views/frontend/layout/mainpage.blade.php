@@ -136,6 +136,7 @@
 							<img src="{{asset('frontend/image/shipping.jpg')}}" alt="" />
 						</div><!--/shipping-->
 					
+					
 					</div>
 				</div>
 				
