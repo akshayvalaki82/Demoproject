@@ -45,10 +45,11 @@ class LoginController extends Controller
     
         $admin_name = config('app.admin_name');
         $customer_name = config('app.customer_name'); 
+        // dd($admin_name);
 
         if(Auth::user()->hasRole($admin_name))
         {
-            return redirect($this->redirectTo);
+            return redirect('frontend/all_page/login');
         }
         }
     }

@@ -107,7 +107,8 @@
 	
 						</div><!--/category-products-->
 					
-						<div class="brands_products"><!--brands_products-->
+					<!--brands_products-->
+						<!-- <div class="brands_products">
 							<h2>Brands</h2>
 							<div class="brands-name">
 								<ul class="nav nav-pills nav-stacked">
@@ -120,7 +121,8 @@
 									<li><a href="#"> <span class="pull-right">(4)</span>Rösch creative culture</a></li>
 								</ul>
 							</div>
-						</div><!--/brands_products-->
+						</div> -->
+						<!--/brands_products-->
 						
 						<div class="price-range"><!--price-range-->
 							<h2>Price Range</h2>
@@ -161,17 +163,7 @@
 			var product_id = null;
 			var parent_product_id = null;
 			ajax(product_id,parent_product_id);
-			// $.ajax({
-			// 	type:'post',
-			// 	url:'{{url("/mainpage/get-all-products")}}',
-			// 	datatype:'json',
-			// 	data:{
-			// 		"_token":"{{ csrf_token() }}",
-			// 	},
-			// 	success:function(data){
-			// 		display_product(data);		
-			// }
-			// })
+		
 
 	})
 	$(document).on('click','.products_id ',function(){  
@@ -224,7 +216,7 @@
 				html +='<div class="choose">';				
 				html +='<ul class="nav nav-pills nav-justified">';					
 				html +='<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>';						
-				html +='<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>';						
+				// html +='<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>';						
 				html +='</ul>';					
 				html +='</div>';				
 				html +='</div>';

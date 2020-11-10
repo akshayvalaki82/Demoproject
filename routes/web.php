@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Auth;
 // use App\Http\Controllers\CouponController;
 /*
 |--------------------------------------------------------------------------
@@ -14,12 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-     return redirect('/login');
+  return redirect('/login');
 });
 
 Route::get('/admin/userss', function () {
-    // return view('welcome');
-   return redirect('/login');
+  // return view('welcome');
+  return redirect('/login');
 });
 
 Route::get('/form', function () {
@@ -29,42 +30,46 @@ Route::get('/form', function () {
 //   return view('frontend/layout/main_page');
 // });
 Route::get('/loginpage', function () {
-  return view('frontend/all_page/login');
+  return view('frontend/auth-page/login');
 });
 
 // Route::get('/app', function () {
 //   return view('layouts/app');
 // });
 
-
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['AdminMiddleware' => 'AdminMid'], function () {
 
-Route::resource('admin/posts', 'Admin\PostsController');
+  Route::get('/home', 'HomeController@index')->name('home');
+
+  Route::resource('admin/posts', 'Admin\PostsController');
 
 
-Route::resource('admin/user', 'Admin\UserController');
+  Route::resource('admin/user', 'Admin\UserController');
 
-Route::resource('admin/configuration', 'Admin\ConfigurationController');
+  Route::resource('admin/configuration', 'Admin\ConfigurationController');
 
-Route::resource('admin/banner', 'Admin\BannerController');
+  Route::resource('admin/banner', 'Admin\BannerController');
 
-Route::resource('admin/category', 'Admin\CategoryController');
+  Route::resource('admin/category', 'Admin\CategoryController');
 
-Route::resource('admin/product-attributes', 'Admin\ProductAttributesController');
+  Route::resource('admin/product-attributes', 'Admin\ProductAttributesController');
 
-Route::resource('admin/product', 'Admin\ProductController');
+  Route::resource('admin/product', 'Admin\ProductController');
 
-Route::post('/admin/product/get-attribute-value', 'Admin\ProductController@getAttributeValue');
+  Route::post('/admin/product/get-attribute-value', 'Admin\ProductController@getAttributeValue');
 
-Route::post('/admin/product/get-attribute-value-new', 'Admin\ProductController@getAttributeValuenew');
+  Route::post('/admin/product/get-attribute-value-new', 'Admin\ProductController@getAttributeValuenew');
 
-Route::resource('admin/coupon', 'Admin\CouponController');
+  Route::resource('admin/coupon', 'Admin\CouponController');
+});
 
-Route::resource('mainpage','Frontend\MainpageController');
+Route::group(['UserMiddleware' => 'UserMid'], function () {
 
-Route::POST('/mainpage/get-product-details','Admin\ProductController@getproductdetails');
+  Route::resource('mainpage', 'Frontend\MainpageController');
 
-Route::POST('/mainpage/get-all-products','Admin\ProductController@getallproductdetails');
+  Route::POST('/mainpage/get-product-details', 'Admin\ProductController@getproductdetails');
+
+  Route::POST('/mainpage/get-all-products', 'Admin\ProductController@getallproductdetails');
+});
