@@ -352,7 +352,7 @@ class ProductController extends Controller
     {
         if($request->id == null)
         {
-            $all_product_details = Product::with(['getProductImage', 'getProductCategory'])->get();
+            $all_product_details = Product::with(['getProductImage', 'getProductCategory'])->limit(5)->orderBy('name','asc')->get();
             //  dd($all_product_details);
             return response()->json(array('product_details' => $all_product_details));
         }
@@ -368,11 +368,6 @@ class ProductController extends Controller
         return response()->json(array('product_details' => $product_details));
     }
     }
-    public function getallproductdetails()
-    {
-        $all_product_details = Product::with(['getProductImage', 'getProductCategory'])->get();
-        //  dd($all_product_details);
-        return response()->json(array('product_details' => $all_product_details));
-    }
+  
 }
 // ->orderBy('name','asc')->offset(2)->limit(1)

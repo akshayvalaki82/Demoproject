@@ -1,7 +1,3 @@
-// function status(){
-//     var x =$("input[]")
-// }
-
 $(document).ready(function(){
     // $.validator.addMethod("productattributevalue",function(value){
     //     return value != "select";

@@ -10,6 +10,9 @@ use Auth;
 class FrontendUserLoginConroller extends Controller
 {
     public function index (){
+        if(Auth::check()){
+            return redirect('/mainpage');   
+        }
         return view('frontend/auth-page/login');
     }
     
@@ -36,20 +39,6 @@ class FrontendUserLoginConroller extends Controller
             return redirect()->back()->with('message', 'email or password is incorrect');
         }
     }
-    // public function userregister(Request $request){
-    //     // $user_data[]=[];
-    //     // dd(request('firstname'));
-    //     $user_data[] = [
-    //         'firstname' => request('firstname'),
-    //         'lastname' => request('lastname'),
-    //         'email' => request('email'),
-    //         'password' => bcrypt(request('password'))
-    //     ];
-    //     if(!empty($user_data)){
-    //         User::insert($user_data);
-    //     }
-    //     return redirect()->back();
-    // }
     
     public function logout(Request $request){
         Auth::logout();

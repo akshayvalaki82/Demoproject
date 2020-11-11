@@ -155,7 +155,6 @@
 	</section>
 @endsection
 
-<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script> -->
 <script src="{{asset('frontend/js/jquery.min.js')}}"></script>
 
 <script>
@@ -204,19 +203,19 @@
 				html +=`<img src="{{asset('admin/product_image/${text.get_product_image[0].image_name}')}}" width="100" height="200" />`
 				html +='<h2>$'+text.price+' </h2>';						
 				html +='<p>'+text.name+'</p>';						
-				html +='<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>';						
+				html +='@if(Auth::check()) <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>@endif';						
 				html +='</div>';					
 				html +='<div class="product-overlay">';					
 				html +='<div class="overlay-content">';						
 				html +='<h2>$'+text.price+'</h2>';							
 				html +='<p>'+text.name+'</p>';							
-				html +='<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>';							
+				html +='@if(Auth::check())<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>@endif';							
 				html +='</div>';						
 				html +='</div>';					
 				html +='</div>';				
 				html +='<div class="choose">';				
 				html +='<ul class="nav nav-pills nav-justified">';					
-				html +='<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>';						
+				html +='@if(Auth::check())<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>@endif';						
 				// html +='<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>';						
 				html +='</ul>';					
 				html +='</div>';				

@@ -6,6 +6,8 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use DB;
+use carbon\carbon;
 
 class RegisterController extends Controller
 {
@@ -45,15 +47,15 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-    }
+    // protected function validator(array $data)
+    // {
+    //     return Validator::make($data, [
+    //         'firstname' => 'required|string|max:255',
+    //         'lastname' => 'required|string|max:255',
+    //         'email' => 'required|string|email|max:255|unique:users',
+    //         'password' => 'required|string|min:6|confirmed',
+    //     ]);
+    // }
 
     /**
      * Create a new user instance after a valid registration.
@@ -64,14 +66,26 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         //  dd($data);
-        return User::create([
+        $data = User::create([
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             
         ]);
-        $id = $this->create($data)->id;
-        dd($id);
+        //    dd($data->id);
+         // $admin_name = config('app.admin_name');
+        $role_id = config('app.customer_role_id');
+            $role_user =[
+            'role_id' => $role_id, 
+            'user_id' => $data->id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ];
+        if(!empty($role_user)){
+            DB::table('role_user')->insert($role_user);
+        }
+        return $data;
+
     }
 }

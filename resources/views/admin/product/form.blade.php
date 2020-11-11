@@ -288,7 +288,7 @@ console.log(abc);
 
 </script>
 
-<!-- <script src="{{asset('admin/js/product_form_validation.js')}}"> </script> -->
+<script src="{{asset('admin/js/product_form_validation.js')}}"> </script>
 <script src="{{asset('admin/js/ckeditor.js')}}"></script>
 <script>
     

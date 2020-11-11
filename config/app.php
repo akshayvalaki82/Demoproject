@@ -215,5 +215,6 @@ return [
     ],
     'admin_name'=> 'admin',
     'customer_name'=>'customer',
+    'customer_role_id' => '5',
 
 ];

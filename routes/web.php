@@ -26,9 +26,11 @@ Route::get('/admin/userss', function () {
 Route::get('/form', function () {
   return view('user/form');
 });
-// Route::get('/main_page', function () {
-//   return view('frontend/layout/main_page');
-// });
+
+Route::get('/user_address', function () {
+  return view('frontend/all-page/user_address');
+});
+
 // Route::get('/user-login', function () {
 //   return view('frontend/auth-page/login');
 // });
@@ -44,7 +46,6 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/home', 'HomeController@index')->name('home');
 
   Route::resource('admin/posts', 'Admin\PostsController');
-
 
   Route::resource('admin/user', 'Admin\UserController');
 
