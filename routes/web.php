@@ -28,7 +28,7 @@ Route::get('/form', function () {
 });
 
 Route::get('/user_address', function () {
-  return view('frontend/all-page/user_address');
+  return view('frontend/User-Address/user_address');
 });
 
 // Route::get('/user-login', function () {
